@@ -18,7 +18,7 @@ class FlashcardViewModel @Inject constructor(
     private val prefs: PreferencesManager
 ) : ViewModel() {
 
-    val currentLimit = prefs.advancedLevel.stateIn(viewModelScope, SharingStarted.Eagerly, 50)
+    val currentLimit = prefs.advancedLevel.stateIn(viewModelScope, SharingStarted.Eagerly, 10)
     val currentIndex = prefs.currentCardIndex.stateIn(viewModelScope, SharingStarted.Eagerly, 0)
 
     val words = currentLimit.flatMapLatest { limit ->

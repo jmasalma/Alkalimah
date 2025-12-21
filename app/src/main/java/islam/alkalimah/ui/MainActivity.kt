@@ -57,7 +57,7 @@ class MainActivity : ComponentActivity() {
                         CompletionScreen(
                             onNavigateToSettings = {
                                 navController.navigate("settings") {
-                                    popUpTo("flashcards") { inclusive = true }
+                                    popUpTo("completion") { inclusive = true }
                                 }
                             }
                         )

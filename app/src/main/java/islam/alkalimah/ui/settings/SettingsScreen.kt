@@ -57,7 +57,7 @@ fun SettingsScreen(
                 colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.error),
                 modifier = Modifier.fillMaxWidth()
             ) {
-                Text("Reset All Progress")
+                Text("Reset Progress and Difficulty")
             }
         }
     }
