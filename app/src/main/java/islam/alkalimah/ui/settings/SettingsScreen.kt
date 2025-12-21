@@ -53,7 +53,10 @@ fun SettingsScreen(
             Spacer(modifier = Modifier.height(32.dp))
 
             Button(
-                onClick = { viewModel.resetProgress() },
+                onClick = {
+                    viewModel.resetProgress()
+                    onBack()
+                },
                 colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.error),
                 modifier = Modifier.fillMaxWidth()
             ) {

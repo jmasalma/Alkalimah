@@ -21,7 +21,10 @@ class PreferencesManager(private val context: Context) {
     }
 
     suspend fun reset() {
-        context.dataStore.edit { it[INDEX_KEY] = 0 }
+        context.dataStore.edit {
+            it[INDEX_KEY] = 0
+            it[LEVEL_KEY] = 10
+        }
     }
 
     companion object {

@@ -44,6 +44,7 @@ class FlashcardViewModel @Inject constructor(
     fun updateLevel(limit: Int) {
         viewModelScope.launch {
             prefs.updateLevel(limit)
+            prefs.saveProgress(0)
         }
     }
 
