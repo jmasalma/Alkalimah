@@ -1,5 +1,8 @@
 package islam.alkalimah.ui.flashcard
 
+import androidx.activity.compose.BackHandler
+import androidx.compose.foundation.BorderStroke
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -8,11 +11,9 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.filled.ArrowForward
 import androidx.compose.material.icons.filled.PlayArrow
-import androidx.compose.material.icons.filled.Settings
-import androidx.compose.foundation.BorderStroke
 import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
@@ -34,18 +35,26 @@ import islam.alkalimah.utils.AudioPlayer
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun FlashcardScreen(viewModel: FlashcardViewModel, audioPlayer: AudioPlayer, onNavigateToSettings: () -> Unit, onNavigateToCompletion: () -> Unit) {
+fun FlashcardScreen(
+    viewModel: FlashcardViewModel,
+    audioPlayer: AudioPlayer,
+    onNavigateToHub: () -> Unit
+) {
     val words by viewModel.words.collectAsState()
     val index by viewModel.currentIndex.collectAsState()
+    val showTransliteration by viewModel.showTransliteration.collectAsState()
+
+    BackHandler {
+        onNavigateToHub()
+    }
 
     Scaffold(
         topBar = {
             TopAppBar(
-                title = { Text("Alkalimah") },
-                actions = {
-                    IconButton(onClick = onNavigateToSettings) {
-                        Icon(Icons.Default.Settings, contentDescription = "Settings")
-                    }
+                title = {
+                    Text(
+                        "Alkalimah",
+                        modifier = Modifier.clickable { onNavigateToHub() })
                 }
             )
         }
@@ -80,11 +89,13 @@ fun FlashcardScreen(viewModel: FlashcardViewModel, audioPlayer: AudioPlayer, onN
                             fontSize = 48.sp,
                             textAlign = TextAlign.Center
                         )
-                        Text(
-                            text = word.transliteration ?: "",
-                            fontSize = 24.sp,
-                            fontStyle = FontStyle.Italic
-                        )
+                        if (showTransliteration) {
+                            Text(
+                                text = word.transliteration ?: "",
+                                fontSize = 24.sp,
+                                fontStyle = FontStyle.Italic
+                            )
+                        }
 
                         Card(
                             modifier = Modifier.fillMaxWidth(),
@@ -118,16 +129,24 @@ fun FlashcardScreen(viewModel: FlashcardViewModel, audioPlayer: AudioPlayer, onN
                     Button(
                         onClick = {
                             if (index == words.size - 1) {
-                                onNavigateToCompletion()
+                                onNavigateToHub()
                             } else {
                                 viewModel.nextCard()
                             }
                         },
                         modifier = Modifier
                             .weight(0.67f)
-                            .padding(start = 8.dp)
+                            .padding(start = 8.dp),
+                        colors = if (index == words.size - 1) {
+                            ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.secondary)
+                        } else {
+                            ButtonDefaults.buttonColors()
+                        }
                     ) {
-                        Text("Next", fontSize = 24.sp)
+                        Text(
+                            if (index == words.size - 1) "Done" else "Next",
+                            fontSize = 24.sp
+                        )
                     }
                 }
             }

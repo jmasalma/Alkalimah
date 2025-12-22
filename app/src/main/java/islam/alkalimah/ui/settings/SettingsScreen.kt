@@ -13,10 +13,11 @@ import islam.alkalimah.ui.flashcard.FlashcardViewModel
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun SettingsScreen(
-    onBack: () -> Unit,
+    onNavigateToHub: () -> Unit,
     viewModel: FlashcardViewModel = hiltViewModel()
 ) {
     val currentLimit by viewModel.currentLimit.collectAsState()
+    val showTransliteration by viewModel.showTransliteration.collectAsState()
     val scope = rememberCoroutineScope()
 
     Scaffold(
@@ -24,7 +25,7 @@ fun SettingsScreen(
             TopAppBar(
                 title = { Text("Settings") },
                 navigationIcon = {
-                    IconButton(onClick = onBack) {
+                    IconButton(onClick = onNavigateToHub) {
                         Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = null)
                     }
                 }
@@ -50,17 +51,27 @@ fun SettingsScreen(
                 steps = 99
             )
 
+            Spacer(modifier = Modifier.height(16.dp))
+
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.SpaceBetween,
+                verticalAlignment = androidx.compose.ui.Alignment.CenterVertically
+            ) {
+                Text(text = "Show Transliteration", style = MaterialTheme.typography.titleMedium)
+                Switch(
+                    checked = showTransliteration,
+                    onCheckedChange = { viewModel.toggleTransliteration(it) }
+                )
+            }
+
             Spacer(modifier = Modifier.height(32.dp))
 
             Button(
-                onClick = {
-                    viewModel.resetProgress()
-                    onBack()
-                },
-                colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.error),
+                onClick = onNavigateToHub,
                 modifier = Modifier.fillMaxWidth()
             ) {
-                Text("Reset Progress and Difficulty")
+                Text("Save")
             }
         }
     }
