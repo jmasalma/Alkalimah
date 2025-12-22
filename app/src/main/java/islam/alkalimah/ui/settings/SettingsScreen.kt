@@ -13,7 +13,7 @@ import islam.alkalimah.ui.flashcard.FlashcardViewModel
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun SettingsScreen(
-    onBack: () -> Unit,
+    onNavigateToHub: () -> Unit,
     viewModel: FlashcardViewModel = hiltViewModel()
 ) {
     val currentLimit by viewModel.currentLimit.collectAsState()
@@ -25,7 +25,7 @@ fun SettingsScreen(
             TopAppBar(
                 title = { Text("Settings") },
                 navigationIcon = {
-                    IconButton(onClick = onBack) {
+                    IconButton(onClick = onNavigateToHub) {
                         Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = null)
                     }
                 }
@@ -68,14 +68,10 @@ fun SettingsScreen(
             Spacer(modifier = Modifier.height(32.dp))
 
             Button(
-                onClick = {
-                    viewModel.resetProgress()
-                    onBack()
-                },
-                colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.error),
+                onClick = onNavigateToHub,
                 modifier = Modifier.fillMaxWidth()
             ) {
-                Text("Reset Progress and Difficulty")
+                Text("Save")
             }
         }
     }

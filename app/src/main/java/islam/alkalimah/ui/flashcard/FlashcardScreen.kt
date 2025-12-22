@@ -12,8 +12,8 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.PlayArrow
-import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
@@ -38,7 +38,6 @@ import islam.alkalimah.utils.AudioPlayer
 fun FlashcardScreen(
     viewModel: FlashcardViewModel,
     audioPlayer: AudioPlayer,
-    onNavigateToSettings: () -> Unit,
     onNavigateToHub: () -> Unit
 ) {
     val words by viewModel.words.collectAsState()
@@ -56,11 +55,6 @@ fun FlashcardScreen(
                     Text(
                         "Alkalimah",
                         modifier = Modifier.clickable { onNavigateToHub() })
-                },
-                actions = {
-                    IconButton(onClick = onNavigateToSettings) {
-                        Icon(Icons.Default.Settings, contentDescription = "Settings")
-                    }
                 }
             )
         }
@@ -142,7 +136,12 @@ fun FlashcardScreen(
                         },
                         modifier = Modifier
                             .weight(0.67f)
-                            .padding(start = 8.dp)
+                            .padding(start = 8.dp),
+                        colors = if (index == words.size - 1) {
+                            ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.primary)
+                        } else {
+                            ButtonDefaults.buttonColors()
+                        }
                     ) {
                         Text(
                             if (index == words.size - 1) "Done" else "Next",

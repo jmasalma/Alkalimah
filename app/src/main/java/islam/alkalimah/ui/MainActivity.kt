@@ -41,7 +41,6 @@ class MainActivity : ComponentActivity() {
                     composable("flashcards") {
                         FlashcardScreen(
                             viewModel = hiltViewModel(),
-                            onNavigateToSettings = { navController.navigate("settings") },
                             onNavigateToHub = {
                                 navController.navigate("splash") {
                                     popUpTo("splash") { inclusive = true }
@@ -52,7 +51,11 @@ class MainActivity : ComponentActivity() {
                     }
                     composable("settings") {
                         SettingsScreen(
-                            onBack = { navController.popBackStack() }
+                            onNavigateToHub = {
+                                navController.navigate("splash") {
+                                    popUpTo("flashcards") { inclusive = true }
+                                }
+                            }
                         )
                     }
                 }
